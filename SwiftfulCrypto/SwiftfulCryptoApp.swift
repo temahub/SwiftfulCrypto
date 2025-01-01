@@ -13,7 +13,7 @@ struct SwiftfulCryptoApp: App {
         WindowGroup {
           NavigationStack {
             HomeView()
-              .toolbar(.hidden)
+              .toolbar(.hidden) // new version, old deprecated
           }
         }
     }
