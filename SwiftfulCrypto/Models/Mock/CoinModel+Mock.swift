@@ -36,7 +36,7 @@ struct MockCoinModel {
     lastUpdated: "2025-01-02T10:24:09.233Z",
     sparklineIn7D: SparklineIn7D(price: [98247.92246369661, 98015.2331340629]),
     priceChangePercentage24HInCurrency: 3.5420528908492255,
-    currentHoldings: nil
+    currentHoldings: 2
   )
   
   static let mockCoins: [CoinModel] = [sampleCoin]
