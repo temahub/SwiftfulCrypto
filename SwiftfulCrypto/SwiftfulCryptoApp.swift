@@ -9,12 +9,16 @@ import SwiftUI
 
 @main
 struct SwiftfulCryptoApp: App {
-    var body: some Scene {
-        WindowGroup {
-          NavigationStack {
-            HomeView()
-              .toolbar(.hidden) // new version, old deprecated
-          }
-        }
+  
+  @StateObject private var vm = HomeViewModel()
+  
+  var body: some Scene {
+    WindowGroup {
+      NavigationStack { // new version, old deprecated
+        HomeView()
+          .toolbar(.hidden) // new version, old deprecated
+      }
+      .environmentObject(vm)
     }
+  }
 }
