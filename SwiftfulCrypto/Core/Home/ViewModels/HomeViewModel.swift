@@ -7,8 +7,17 @@
 
 import Foundation
 import Combine
+import SwiftUICore
 
-class HomeViewModel: ObservableObject {
+final class HomeViewModel: ObservableObject {
+  
+  @Published var statistics: [StatisticModel] = [
+    MockStatisticModel.sample1StatisticModel,
+    MockStatisticModel.sample2StatisticModel,
+    MockStatisticModel.sample2StatisticModel,
+    MockStatisticModel.sample3StatisticModel
+  ]
+  
   @Published var allCoins: [CoinModel] = []
   @Published var portfolioCoins: [CoinModel] = []
   @Published var searchText: String = ""
