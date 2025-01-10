@@ -34,6 +34,7 @@ final class HomeViewModel: ObservableObject {
 //      .store(in: &cancellables)
     
     // updates allCoins
+    // TODO: Replace Combine to Structured Concurrency
     $searchText
       .combineLatest(coinDataService.$allCoins)
       .debounce(for: .seconds(0.5), scheduler: DispatchQueue.main)
@@ -44,6 +45,7 @@ final class HomeViewModel: ObservableObject {
       .store(in: &cancellables)
     
     // updates global market data
+    // TODO: Replace Combine to Structured Concurrency
     marketDataService.$marketData
       .map(mapGlobalMarketData)
       .sink { [weak self] (returnedStats) in
