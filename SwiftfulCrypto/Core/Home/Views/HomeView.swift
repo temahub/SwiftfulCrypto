@@ -88,6 +88,7 @@ extension HomeView {
       }
     }
     .listStyle(.plain)
+    .refreshable { vm.reloadData() }  // iOS 15.0+
   }
   
   private var portfolioCoinsList: some View {
@@ -109,6 +110,15 @@ extension HomeView {
       }
       Text("Price")
         .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
+      
+      Button(action: {
+        withAnimation(.linear(duration: 2.0)) {
+          vm.reloadData()
+        }
+      }) {
+        Image(systemName: "goforward")
+      }
+      .rotationEffect(Angle(degrees: vm.isLoading ? 360 : 0))
     }
     .font(.caption)
     .foregroundStyle(Color.theme.secondaryText)
