@@ -111,7 +111,7 @@ extension HomeView {
       }
       .onTapGesture {
         withAnimation(.default) {
-          vm.sortOption = vm.sortOption == .rank ? .rankReversed : .rank
+          vm.sortOption.toggleRank()
         }
       }
       
@@ -125,7 +125,7 @@ extension HomeView {
         }
         .onTapGesture {
           withAnimation(.default) {
-            vm.sortOption = vm.sortOption == .holdings ? .holdingsReversed : .holdings
+            vm.sortOption.toggleHoldings()
           }
         }
       }
@@ -138,7 +138,7 @@ extension HomeView {
       .frame(width: UIScreen.main.bounds.width / 3.5, alignment: .trailing)
       .onTapGesture {
         withAnimation(.default) {
-          vm.sortOption = vm.sortOption == .price ? .priceReversed : .price
+          vm.sortOption.togglePrice()
         }
       }
       

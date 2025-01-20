@@ -172,5 +172,32 @@ extension HomeViewModel {
         return { $0 }
       }
     }
+    
+    mutating func toggleRank() {
+      switch self {
+      case .rank:
+          self = .rankReversed
+      default:
+          self = .rank
+      }
+    }
+    
+    mutating func togglePrice() {
+      switch self {
+      case .price:
+        self = .priceReversed
+      default:
+        self = .price
+      }
+    }
+    
+    mutating func toggleHoldings() {
+      switch self {
+      case .holdings:
+        self = .holdingsReversed
+      default:
+        self = .holdings
+      }
+    }
   }
 }
