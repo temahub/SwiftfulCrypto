@@ -52,7 +52,8 @@ import Foundation
  
  */
 
-struct CoinModel: Identifiable, Codable {
+struct CoinModel: Identifiable, Codable, Hashable {
+  
   let id, symbol, name: String
   let image: String
   let currentPrice: Double
@@ -110,9 +111,17 @@ struct CoinModel: Identifiable, Codable {
   var rank: Int {
     Int(marketCapRank ?? 0)
   }
+  
+  static func == (lhs: CoinModel, rhs: CoinModel) -> Bool {
+    return lhs.id == rhs.id &&
+    lhs.symbol == rhs.symbol &&
+    lhs.name == rhs.name &&
+    lhs.priceChange24H == rhs.priceChange24H &&
+    lhs.marketCap == rhs.marketCap
+  }
 }
 
 // MARK: - SparklineIn7D
-struct SparklineIn7D: Codable {
+struct SparklineIn7D: Codable, Hashable {
   let price: [Double]
 }
