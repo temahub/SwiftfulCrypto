@@ -13,9 +13,6 @@ struct HomeView: View {
   @State private var showPortfolio: Bool = false  // animate right
   @State private var showProtfolioView: Bool = false  // new sheet
   
-  @State private var selectedCoin: CoinModel? = nil
-  @State private var showDetailView: Bool = false
-  
   var body: some View {
     ZStack {
       // background layer
@@ -47,13 +44,6 @@ struct HomeView: View {
         Spacer(minLength: 0)
       }
     }
-    .background(
-      // was deprecated in iOS 16.0
-      NavigationLink(destination: DetailLoadingView(coin: $selectedCoin),
-                     isActive: $showDetailView,
-                     label: { EmptyView() })
-      
-    )
   }
 }
 
@@ -93,31 +83,29 @@ extension HomeView {
   private var allCoinsList: some View {
     List {
       ForEach(vm.allCoins) { coin in
-//        NavigationLink(value: coin) {
+        NavigationLink(value: coin) { // new approach instead of depricated NavigationLink(destination, isActive, label:)
           CoinRowView(coin: coin, showHoldingsColumn: false)
-            .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
-            .onTapGesture {
-              segue(coin: coin)
-            }
-//        }
+        }
+        .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
       }
     }
     .listStyle(.plain)
     .refreshable { vm.reloadData() }  // iOS 15.0+
-//    .navigationDestination(for: CoinModel.self) { DetailView(coin: $0) }
+    .navigationDestination(for: CoinModel.self) { DetailView(coin: $0) } // iOS 16.0, new approach instead of depricated NavigationLink(destination, isActive, label:)
   }
   
   private var portfolioCoinsList: some View {
     List {
       ForEach(vm.portfolioCoins) { coin in
-        CoinRowView(coin: coin, showHoldingsColumn: true)
-          .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
-          .onTapGesture {
-            segue(coin: coin)
-          }
+        NavigationLink(value: coin) { // new approach instead of depricated NavigationLink(destination, isActive, label:)
+          CoinRowView(coin: coin, showHoldingsColumn: true)
+        }
+        .listRowInsets(.init(top: 10, leading: 0, bottom: 10, trailing: 10))
       }
     }
     .listStyle(.plain)
+    .refreshable { vm.reloadData() }  // iOS 15.0+
+    .navigationDestination(for: CoinModel.self) { DetailView(coin: $0) } // iOS 16.0, new approach instead of depricated NavigationLink(destination, isActive, label:)
   }
   
   private var columnTitles: some View {
@@ -173,13 +161,6 @@ extension HomeView {
     .font(.caption)
     .foregroundStyle(Color.theme.secondaryText)
     .padding(.horizontal, 10)
-  }
-}
-
-extension HomeView {
-  private func segue(coin: CoinModel) {
-    selectedCoin = coin
-    showDetailView.toggle()
   }
 }
 
