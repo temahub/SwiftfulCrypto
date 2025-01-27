@@ -22,9 +22,10 @@ struct CoinRowView: View {
       rightColumn
     }
     .font(.subheadline)
-    .background(
-      Color.theme.background.opacity(0.001)
-    )
+    .contentShape(Rectangle())  // to avoid possible lack of clickability of rows
+//    .background(
+//      Color.theme.background.opacity(0.001)
+//    )
   }
 }
 
