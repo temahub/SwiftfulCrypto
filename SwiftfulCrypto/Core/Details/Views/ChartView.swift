@@ -55,22 +55,32 @@ struct ChartView: View {
 extension ChartView {
   private var chartView: some View {
     GeometryReader { geometry in
+      // Create an array of points from your data.
+      // Adjust the x-position calculation so that the first point starts at x = 0.
+      let points: [CGPoint] = data.indices.map { index in
+        // Using data.count - 1 so that the last point is at the full width.
+        let xPosition = geometry.size.width / CGFloat(data.count - 1) * CGFloat(index)
+        let yAxis = maxY - minY
+        // Calculate the y-position so that higher data values are higher on the view.
+        let yPosition = (1 - CGFloat((data[index] - minY) / yAxis)) * geometry.size.height
+        return CGPoint(x: xPosition, y: yPosition)
+      }
+      
+      // If there are enough points, smooth them using Catmull-Rom interpolation.
+      let interpolatedPoints = points.count >= 4 ? points.catmullRomInterpolated(segments: 10) : points
+      
+      // Draw the path using the interpolated points.
       Path { path in
-        for index in data.indices {
-          let xPosition = geometry.size.width / CGFloat(data.count) * CGFloat(index + 1)
-          
-          let yAxis = maxY - minY
-          
-          let yPosition = (1 - CGFloat((data[index] - minY) / yAxis)) * geometry.size.height
-          
-          if index == 0 {
-            path.move(to: CGPoint(x: xPosition, y: yPosition))
-          }
-          path.addLine(to: CGPoint(x: xPosition, y: yPosition))
+        guard let firstPoint = interpolatedPoints.first else { return }
+        path.move(to: firstPoint)
+        
+        for point in interpolatedPoints.dropFirst() {
+          path.addLine(to: point)
         }
       }
       .trim(from: 0, to: percentage)
       .stroke(lineColor, style: StrokeStyle(lineWidth: 2, lineCap: .round, lineJoin: .round))
+      // Add shadows as before.
       .shadow(color: lineColor.opacity(0), radius: 10, x: 0.0, y: 10)
       .shadow(color: lineColor.opacity(1), radius: 10, x: 0.0, y: 10)
       .shadow(color: lineColor.opacity(0.5), radius: 10, x: 0.0, y: 10)
@@ -78,6 +88,7 @@ extension ChartView {
       .shadow(color: lineColor.opacity(0.1), radius: 10, x: 0.0, y: 30)
     }
   }
+  
   
   private var chartBackground: some View {
     VStack {
